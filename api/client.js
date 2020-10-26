@@ -20,6 +20,18 @@ const createClient = async (req, res, next) => {
 	}
 };
 
+const deleteClient = async (req, res, next) => {
+	try {
+		const client = await Client.findOneAndDelete({ _id: req.params.id});
+		if(client) res.send({ message: "The customer removed"})
+		else res.send({message: "Client not found"})
+	} catch (error) {
+		next(error);
+	}
+};
+
+
 module.exports = {
 	createClient,
+	deleteClient
 }
