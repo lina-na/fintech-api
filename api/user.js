@@ -1,5 +1,7 @@
 const {User, validate} = require('../models/user');
-const bcrypt = require('bcrypt');
+const config = require('config');
+const jwt = require('jsonwebtoken')
+const { encrypt } = require('../helpers/bcrypt')
 
 const signUp = async (req, res, next) => {
 	try {
@@ -10,9 +12,8 @@ const signUp = async (req, res, next) => {
 		if (user) return res.status(400).send('User already register.');
 
 		user = new User(req.body);
+		user.password = await encrypt(user.password);
 
-		const salt = await bcrypt.genSalt(10);
-		user.password = await bcrypt.hash(user.password, salt);
 		await user.save();
 
 		res.send(user)
@@ -21,6 +22,23 @@ const signUp = async (req, res, next) => {
 	}
 };
 
+const signIn = async (req, res, next) => {
+	try {
+		const user = await User.findOne({ email: req.body.email });
+		if(!user) return res.status(400).send('Email in not found');
+
+		const validPass = await bcrypt.compare(req.body.password, user.password);
+		if(!validPass) return res.status(400).send('Invalid password');
+
+		const token = jwt.sign({_id: user._id}, config.get('jwt'));
+		res.send({token});
+	} catch (error) {
+		next(error);
+	}
+};
+
+
 module.exports = {
-	signUp
+	signUp,
+	signIn
 }
