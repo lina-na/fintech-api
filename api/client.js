@@ -20,6 +20,15 @@ const createClient = async (req, res, next) => {
 	}
 };
 
+const getClients = async (req, res, next) => {
+	try {
+		const clients = await Client.find();
+		res.send(clients)
+	} catch (error) {
+		next(error)
+	}
+}
+
 const deleteClient = async (req, res, next) => {
 	try {
 		const client = await Client.findOneAndDelete({ _id: req.params.id});
@@ -33,5 +42,6 @@ const deleteClient = async (req, res, next) => {
 
 module.exports = {
 	createClient,
+	getClients,
 	deleteClient
 }
