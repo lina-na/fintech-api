@@ -27,7 +27,21 @@ const getClients = async (req, res, next) => {
 	} catch (error) {
 		next(error)
 	}
-}
+};
+
+const updateClient = async (req, res, next) => {
+	try {
+		const { error } = validate(req.body);
+		if (error) return res.status(400).send(error.details[0].message);
+
+		const client = await Client.findOneAndUpdate({ _id: req.params.id}, req.body, {new: true});
+		if(!client) return res.status(400).send("Client not found");
+
+		res.send(client);
+	} catch (error) {
+		next(error);
+	}
+};
 
 const deleteClient = async (req, res, next) => {
 	try {
@@ -43,5 +57,6 @@ const deleteClient = async (req, res, next) => {
 module.exports = {
 	createClient,
 	getClients,
+	updateClient,
 	deleteClient
 }
