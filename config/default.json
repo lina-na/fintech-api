@@ -1,4 +1,7 @@
 {
   "jwt": "mptquu8JtyYE6IOlgwUCBCQ-6Gr7kqZ44-6nu75LNQOnEWiWr6occ_iXPC2o4wbC-qH8q2c-QQrPhY78116gYF0vW-OciTMex24NnuBi-s_EC6QxIUrXIWB8gRfMhHbaTw4eV9RIcpzWMpy6wLclUIhVv50xtTiZzhlLfBbrTyM",
-  "db": "mongodb+srv://Admin:qkcrjt9P0bHAb4RR@cluster0.3bjv8.mongodb.net/fin-tech"
+  "db": "mongodb+srv://Admin:qkcrjt9P0bHAb4RR@cluster0.3bjv8.mongodb.net/fin-tech",
+  "cors": {
+    "exposedHeaders": "x-token"
+  }
 }
