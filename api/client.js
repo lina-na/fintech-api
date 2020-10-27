@@ -1,5 +1,5 @@
 const { Client, validate } = require('../models/client');
-const { encrypt } = require('../helpers/bcrypt')
+const { encrypt, decrypt } = require('../helpers/crypto')
 
 const createClient = async (req, res, next) => {
 	try {
@@ -10,7 +10,7 @@ const createClient = async (req, res, next) => {
 		if (client) return res.status(400).send('Client already register.');
 
 		client = new Client(req.body);
-		client.ssn = await encrypt(req.body.ssn);
+		client.ssn = encrypt(req.body.ssn);
 
 		await client.save();
 
@@ -23,6 +23,10 @@ const createClient = async (req, res, next) => {
 const getClients = async (req, res, next) => {
 	try {
 		const clients = await Client.find();
+		clients.map(async ( client ) => {
+			client.ssn = decrypt(client.ssn);
+		});
+
 		res.send(clients)
 	} catch (error) {
 		next(error)

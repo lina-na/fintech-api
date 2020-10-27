@@ -13,6 +13,6 @@ const compare = async (field, f) => {
 
 module.exports ={
 	encrypt,
-	compare
+	compare,
 }
 

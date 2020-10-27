@@ -9,9 +9,10 @@
   "author": "Lina Alexandrova",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
     "bcrypt": "^5.0.0",
     "config": "^3.3.2",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.0.0",
     "express": "^4.17.1",
     "joi": "^17.3.0",
     "jsonwebtoken": "^8.5.1",
