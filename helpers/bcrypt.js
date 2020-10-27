@@ -6,7 +6,13 @@ const encrypt = async (field) => {
 	return await bcrypt.hash(field, salt);
 }
 
+const compare = async (field, f) => {
+
+	return await bcrypt.compare(field, f);
+}
+
 module.exports ={
-	encrypt
+	encrypt,
+	compare
 }
 

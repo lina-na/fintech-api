@@ -14,7 +14,7 @@ const createClient = async (req, res, next) => {
 
 		await client.save();
 
-		res.send(client)
+		res.send({ message: "Application is accepted"});
 	} catch (error) {
 		next(error);
 	}

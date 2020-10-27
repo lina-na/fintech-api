@@ -1,7 +1,7 @@
 const {User, validate} = require('../models/user');
 const config = require('config');
 const jwt = require('jsonwebtoken')
-const { encrypt } = require('../helpers/bcrypt')
+const { encrypt, compare } = require('../helpers/bcrypt')
 
 const signUp = async (req, res, next) => {
 	try {
@@ -16,7 +16,7 @@ const signUp = async (req, res, next) => {
 
 		await user.save();
 
-		res.send(user)
+		res.send({message: "User was created successfully"})
 	} catch (error) {
 		next(error);
 	}
@@ -27,11 +27,13 @@ const signIn = async (req, res, next) => {
 		const user = await User.findOne({ email: req.body.email });
 		if(!user) return res.status(400).send('Email in not found');
 
-		const validPass = await bcrypt.compare(req.body.password, user.password);
+		const validPass = compare(req.body.password, user.password);
 		if(!validPass) return res.status(400).send('Invalid password');
 
 		const token = jwt.sign({_id: user._id}, config.get('jwt'));
-		res.send({token});
+		delete user["_doc"].password;
+		
+		res.send({token, ...user["_doc"]});
 	} catch (error) {
 		next(error);
 	}
